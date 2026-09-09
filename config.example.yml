@@ -1,0 +1,6 @@
+endpoint: https://api.64clouds.com/v1
+nodes:
+  - veid: 1807892
+    api_key: private_xxx
+  - veid: 1063765
+    api_key: private_yyy
