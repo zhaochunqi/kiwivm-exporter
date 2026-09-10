@@ -30,6 +30,10 @@ var (
 
 	descUp            = prometheus.NewDesc("kiwivm_up", "Whether the VPS is running (ve_status == running).", hostVeidLabels, nil)
 	descCPUUsage      = prometheus.NewDesc("kiwivm_cpu_usage_percent", "CPU usage percent from the latest raw usage sample.", hostVeidLabels, nil)
+	descNetIn         = prometheus.NewDesc("kiwivm_network_in_bytes", "Bytes received in the latest 5 minute usage sample.", hostVeidLabels, nil)
+	descNetOut        = prometheus.NewDesc("kiwivm_network_out_bytes", "Bytes sent in the latest 5 minute usage sample.", hostVeidLabels, nil)
+	descDiskRead      = prometheus.NewDesc("kiwivm_disk_read_bytes", "Bytes read from disk in the latest 5 minute usage sample.", hostVeidLabels, nil)
+	descDiskWrite     = prometheus.NewDesc("kiwivm_disk_write_bytes", "Bytes written to disk in the latest 5 minute usage sample.", hostVeidLabels, nil)
 	descMemTotal      = prometheus.NewDesc("kiwivm_mem_total_bytes", "Total memory (plan_ram), in bytes.", hostVeidLabels, nil)
 	descMemAvailable  = prometheus.NewDesc("kiwivm_mem_available_bytes", "Available memory, in bytes.", hostVeidLabels, nil)
 	descSwapTotal     = prometheus.NewDesc("kiwivm_swap_total_bytes", "Total swap, in bytes.", hostVeidLabels, nil)
@@ -204,6 +208,10 @@ func (c *Collector) collectNode(ch chan<- prometheus.Metric, n *nodeState) {
 	if n.stats != nil {
 		if s := n.stats.Latest(); s != nil {
 			ch <- prometheus.MustNewConstMetric(descCPUUsage, prometheus.GaugeValue, s.CPUUsage, hostname, veid)
+			ch <- prometheus.MustNewConstMetric(descNetIn, prometheus.GaugeValue, float64(s.NetworkInBytes), hostname, veid)
+			ch <- prometheus.MustNewConstMetric(descNetOut, prometheus.GaugeValue, float64(s.NetworkOutBytes), hostname, veid)
+			ch <- prometheus.MustNewConstMetric(descDiskRead, prometheus.GaugeValue, float64(s.DiskReadBytes), hostname, veid)
+			ch <- prometheus.MustNewConstMetric(descDiskWrite, prometheus.GaugeValue, float64(s.DiskWriteBytes), hostname, veid)
 		}
 	}
 }

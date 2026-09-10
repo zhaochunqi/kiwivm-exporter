@@ -30,6 +30,8 @@
 | `kiwivm_disk_used_bytes` | gauge | `hostname`, `veid` | 已用磁盘 |
 | `kiwivm_disk_quota_bytes` | gauge | `hostname`, `veid` | 磁盘配额 |
 | `kiwivm_cpu_throttled` / `kiwivm_disk_throttled` | gauge | `hostname`, `veid` | 是否被限速(0/1) |
+| `kiwivm_network_in_bytes` / `kiwivm_network_out_bytes` | gauge | `hostname`, `veid` | 最新 5 分钟采样间隔内网络收/发字节数(除以 300 得 Bps) |
+| `kiwivm_disk_read_bytes` / `kiwivm_disk_write_bytes` | gauge | `hostname`, `veid` | 最新 5 分钟采样间隔内磁盘读/写字节数(除以 300 得 Bps) |
 | `kiwivm_api_up` | gauge | `veid` | exporter 调 KiwiVM API 是否成功 |
 
 ## 配置

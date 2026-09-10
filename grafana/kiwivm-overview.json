@@ -244,10 +244,48 @@
       ]
     },
     {
+      "title": "网络带宽",
+      "type": "timeseries",
+      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 36 },
+      "fieldConfig": { "defaults": { "unit": "Bps", "custom": { "drawStyle": "line", "fillOpacity": 10, "lineWidth": 2 } } },
+      "targets": [
+        {
+          "expr": "kiwivm_network_in_bytes{hostname=~\"$hostname\"} / 300",
+          "legendFormat": "{{hostname}} 接收",
+          "refId": "A"
+        },
+        {
+          "expr": "kiwivm_network_out_bytes{hostname=~\"$hostname\"} / 300",
+          "legendFormat": "{{hostname}} 发送",
+          "refId": "B"
+        }
+      ]
+    },
+    {
+      "title": "磁盘 IO",
+      "type": "timeseries",
+      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 36 },
+      "fieldConfig": { "defaults": { "unit": "Bps", "custom": { "drawStyle": "line", "fillOpacity": 10, "lineWidth": 2 } } },
+      "targets": [
+        {
+          "expr": "kiwivm_disk_read_bytes{hostname=~\"$hostname\"} / 300",
+          "legendFormat": "{{hostname}} 读",
+          "refId": "A"
+        },
+        {
+          "expr": "kiwivm_disk_write_bytes{hostname=~\"$hostname\"} / 300",
+          "legendFormat": "{{hostname}} 写",
+          "refId": "B"
+        }
+      ]
+    },
+    {
       "title": "API 限流剩余积分",
       "type": "timeseries",
       "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "gridPos": { "h": 6, "w": 24, "x": 0, "y": 36 },
+      "gridPos": { "h": 6, "w": 24, "x": 0, "y": 44 },
       "fieldConfig": { "defaults": { "unit": "short", "custom": { "drawStyle": "line", "fillOpacity": 0, "lineWidth": 1 } } },
       "targets": [
         {
