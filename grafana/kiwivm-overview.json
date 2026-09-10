@@ -538,7 +538,7 @@
       ]
     },
     {
-      "title": "每日流量消耗",
+      "title": "每日流量消耗(近 30 天)",
       "type": "timeseries",
       "datasource": {
         "type": "prometheus",
@@ -558,16 +558,18 @@
             "drawStyle": "bars",
             "fillOpacity": 60,
             "lineWidth": 1
-          }
+          },
+          "decimals": 0
         }
       },
       "targets": [
         {
-          "expr": "increase(bandwagon_data_counter{hostname=~\"$hostname\"}[24h])",
+          "expr": "increase(bandwagon_data_counter{hostname=~\"$hostname\"}[24h]) and on(hostname, instance) (kiwivm_up)",
           "legendFormat": "{{hostname}}",
           "refId": "A"
         }
-      ]
+      ],
+      "timeFrom": "30d"
     },
     {
       "title": "月度流量",
@@ -674,7 +676,36 @@
               }
             ]
           }
-        }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "B"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "blue"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "blue",
+                      "value": null
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
       },
       "targets": [
         {
