@@ -141,21 +141,16 @@
       ]
     },
     {
-      "title": "SWAP",
+      "title": "SWAP 使用率",
       "type": "timeseries",
       "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
       "gridPos": { "h": 8, "w": 12, "x": 12, "y": 12 },
-      "fieldConfig": { "defaults": { "unit": "bytes", "custom": { "drawStyle": "line", "fillOpacity": 10, "lineWidth": 2 } } },
+      "fieldConfig": { "defaults": { "unit": "percent", "min": 0, "max": 100, "custom": { "drawStyle": "line", "fillOpacity": 10, "lineWidth": 2 } } },
       "targets": [
         {
-          "expr": "kiwivm_swap_total_bytes{hostname=~\"$hostname\"} - kiwivm_swap_available_bytes{hostname=~\"$hostname\"}",
-          "legendFormat": "{{hostname}} 已用",
+          "expr": "(1 - kiwivm_swap_available_bytes{hostname=~\"$hostname\"} / kiwivm_swap_total_bytes{hostname=~\"$hostname\"}) * 100",
+          "legendFormat": "{{hostname}}",
           "refId": "A"
-        },
-        {
-          "expr": "kiwivm_swap_total_bytes{hostname=~\"$hostname\"}",
-          "legendFormat": "{{hostname}} 总量",
-          "refId": "B"
         }
       ]
     },
@@ -184,21 +179,16 @@
       ]
     },
     {
-      "title": "磁盘用量",
+      "title": "磁盘使用率",
       "type": "timeseries",
       "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
       "gridPos": { "h": 8, "w": 12, "x": 12, "y": 20 },
-      "fieldConfig": { "defaults": { "unit": "bytes", "custom": { "drawStyle": "line", "fillOpacity": 10, "lineWidth": 2 } } },
+      "fieldConfig": { "defaults": { "unit": "percent", "min": 0, "max": 100, "custom": { "drawStyle": "line", "fillOpacity": 10, "lineWidth": 2 } } },
       "targets": [
         {
-          "expr": "kiwivm_disk_used_bytes{hostname=~\"$hostname\"}",
-          "legendFormat": "{{hostname}} 已用",
+          "expr": "kiwivm_disk_used_bytes{hostname=~\"$hostname\"} / kiwivm_disk_quota_bytes{hostname=~\"$hostname\"} * 100",
+          "legendFormat": "{{hostname}}",
           "refId": "A"
-        },
-        {
-          "expr": "kiwivm_disk_quota_bytes{hostname=~\"$hostname\"}",
-          "legendFormat": "{{hostname}} 配额",
-          "refId": "B"
         }
       ]
     },
@@ -211,22 +201,45 @@
       "targets": [
         {
           "expr": "bandwagon_data_counter{hostname=~\"$hostname\"}",
-          "legendFormat": "{{hostname}}",
+          "legendFormat": "{{hostname}} 已用",
           "refId": "A"
+        },
+        {
+          "expr": "bandwagon_plan_monthly_data{hostname=~\"$hostname\"}",
+          "legendFormat": "{{hostname}} 月配额",
+          "refId": "B"
         }
       ]
     },
     {
-      "title": "月度流量配额",
+      "title": "月度流量",
       "type": "stat",
       "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
       "gridPos": { "h": 8, "w": 12, "x": 12, "y": 28 },
-      "fieldConfig": { "defaults": { "unit": "bytes", "color": { "mode": "thresholds" }, "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "orange", "value": 0.7 }, { "color": "red", "value": 0.9 } ] } } },
+      "fieldConfig": {
+        "defaults": { "unit": "percentunit", "decimals": 1, "min": 0, "max": 1, "color": { "mode": "thresholds" }, "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "orange", "value": 0.7 }, { "color": "red", "value": 0.9 } ] } },
+        "overrides": [
+          {
+            "matcher": { "id": "byFrameRefID", "options": "B" },
+            "properties": [
+              { "id": "unit", "value": "dateTimeAsIso" },
+              { "id": "min" },
+              { "id": "max" },
+              { "id": "color", "value": { "mode": "fixed", "fixedColor": "text" } }
+            ]
+          }
+        ]
+      },
       "targets": [
         {
           "expr": "bandwagon_data_counter{hostname=~\"$hostname\"} / bandwagon_plan_monthly_data{hostname=~\"$hostname\"}",
-          "legendFormat": "{{hostname}}",
+          "legendFormat": "{{hostname}} 使用占比",
           "refId": "A"
+        },
+        {
+          "expr": "bandwagon_data_next_reset{hostname=~\"$hostname\"} * 1000",
+          "legendFormat": "{{hostname}} 重置时间",
+          "refId": "B"
         }
       ]
     },
