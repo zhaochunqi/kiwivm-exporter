@@ -11,18 +11,28 @@
   ],
   "title": "KiwiVM Exporter Overview",
   "uid": "kiwivm-exporter-overview",
-  "tags": ["kiwivm", "bandwagon", "vps"],
+  "tags": [
+    "kiwivm",
+    "bandwagon",
+    "vps"
+  ],
   "schemaVersion": 39,
   "version": 1,
   "refresh": "1m",
-  "time": { "from": "now-6h", "to": "now" },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
   "timezone": "browser",
   "templating": {
     "list": [
       {
         "name": "hostname",
         "type": "query",
-        "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
         "query": "label_values(kiwivm_up, hostname)",
         "includeAll": true,
         "allValue": ".*",
@@ -35,15 +45,58 @@
     {
       "title": "节点信息",
       "type": "table",
-      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "gridPos": { "h": 5, "w": 24, "x": 0, "y": 0 },
-      "options": { "showHeader": true },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "options": {
+        "showHeader": true
+      },
       "fieldConfig": {
         "defaults": {},
         "overrides": [
-          { "matcher": { "id": "byName", "options": "内存" }, "properties": [ { "id": "unit", "value": "bytes" } ] },
-          { "matcher": { "id": "byName", "options": "磁盘" }, "properties": [ { "id": "unit", "value": "bytes" } ] },
-          { "matcher": { "id": "byName", "options": "SWAP" }, "properties": [ { "id": "unit", "value": "bytes" } ] }
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "内存"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "磁盘"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "SWAP"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              }
+            ]
+          }
         ]
       },
       "transformations": [
@@ -51,16 +104,31 @@
           "id": "convertFieldType",
           "options": {
             "conversions": [
-              { "targetField": "ram", "destinationType": "number" },
-              { "targetField": "disk", "destinationType": "number" },
-              { "targetField": "swap", "destinationType": "number" }
+              {
+                "targetField": "ram",
+                "destinationType": "number"
+              },
+              {
+                "targetField": "disk",
+                "destinationType": "number"
+              },
+              {
+                "targetField": "swap",
+                "destinationType": "number"
+              }
             ]
           }
         },
         {
           "id": "organize",
           "options": {
-            "excludeByName": { "Time": true, "Value": true, "__name__": true, "job": true, "instance": true },
+            "excludeByName": {
+              "Time": true,
+              "Value": true,
+              "__name__": true,
+              "job": true,
+              "instance": true
+            },
             "renameByName": {
               "hostname": "主机名",
               "ip_address": "IP",
@@ -88,12 +156,34 @@
     {
       "title": "VPS 运行状态",
       "type": "stat",
-      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 5 },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 0,
+        "y": 5
+      },
       "fieldConfig": {
         "defaults": {
           "unit": "string",
-          "mappings": [{ "type": "value", "options": { "1": { "text": "运行中", "color": "green" }, "0": { "text": "已停止", "color": "red" } } }]
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "1": {
+                  "text": "运行中",
+                  "color": "green"
+                },
+                "0": {
+                  "text": "已停止",
+                  "color": "red"
+                }
+              }
+            }
+          ]
         }
       },
       "targets": [
@@ -107,12 +197,34 @@
     {
       "title": "API 连通性",
       "type": "stat",
-      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 5 },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 6,
+        "y": 5
+      },
       "fieldConfig": {
         "defaults": {
           "unit": "string",
-          "mappings": [{ "type": "value", "options": { "1": { "text": "正常", "color": "green" }, "0": { "text": "失败", "color": "red" } } }]
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "1": {
+                  "text": "正常",
+                  "color": "green"
+                },
+                "0": {
+                  "text": "失败",
+                  "color": "red"
+                }
+              }
+            }
+          ]
         }
       },
       "targets": [
@@ -126,16 +238,42 @@
     {
       "title": "7 天可用率",
       "type": "stat",
-      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "gridPos": { "h": 4, "w": 6, "x": 12, "y": 5 },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 12,
+        "y": 5
+      },
       "fieldConfig": {
         "defaults": {
           "unit": "percent",
           "decimals": 2,
           "min": 0,
           "max": 100,
-          "color": { "mode": "thresholds" },
-          "thresholds": { "mode": "absolute", "steps": [ { "color": "red", "value": null }, { "color": "orange", "value": 99 }, { "color": "green", "value": 99.9 } ] }
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 99
+              },
+              {
+                "color": "green",
+                "value": 99.9
+              }
+            ]
+          }
         }
       },
       "targets": [
@@ -149,12 +287,34 @@
     {
       "title": "限流标记",
       "type": "stat",
-      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "gridPos": { "h": 4, "w": 6, "x": 18, "y": 5 },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 18,
+        "y": 5
+      },
       "fieldConfig": {
         "defaults": {
           "unit": "string",
-          "mappings": [{ "type": "value", "options": { "1": { "text": "CPU/磁盘限速", "color": "orange" }, "0": { "text": "正常", "color": "green" } } }]
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "1": {
+                  "text": "CPU/磁盘限速",
+                  "color": "orange"
+                },
+                "0": {
+                  "text": "正常",
+                  "color": "green"
+                }
+              }
+            }
+          ]
         }
       },
       "targets": [
@@ -168,10 +328,30 @@
     {
       "title": "CPU 使用率",
       "type": "timeseries",
-      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 9 },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 9
+      },
       "fieldConfig": {
-        "defaults": { "unit": "percent", "min": 0, "max": 100, "custom": { "drawStyle": "line", "fillOpacity": 10, "lineWidth": 2, "stacking": { "mode": "none" } } }
+        "defaults": {
+          "unit": "percent",
+          "min": 0,
+          "max": 100,
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "lineWidth": 2,
+            "stacking": {
+              "mode": "none"
+            }
+          }
+        }
       },
       "targets": [
         {
@@ -184,10 +364,27 @@
     {
       "title": "内存使用率",
       "type": "timeseries",
-      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 9 },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 9
+      },
       "fieldConfig": {
-        "defaults": { "unit": "percent", "min": 0, "max": 100, "custom": { "drawStyle": "line", "fillOpacity": 10, "lineWidth": 2 } }
+        "defaults": {
+          "unit": "percent",
+          "min": 0,
+          "max": 100,
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "lineWidth": 2
+          }
+        }
       },
       "targets": [
         {
@@ -200,9 +397,26 @@
     {
       "title": "内存可用量",
       "type": "timeseries",
-      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 17 },
-      "fieldConfig": { "defaults": { "unit": "bytes", "custom": { "drawStyle": "line", "fillOpacity": 10, "lineWidth": 2 } } },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 17
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bytes",
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "lineWidth": 2
+          }
+        }
+      },
       "targets": [
         {
           "expr": "kiwivm_mem_available_bytes{hostname=~\"$hostname\"}",
@@ -219,9 +433,28 @@
     {
       "title": "SWAP 使用率",
       "type": "timeseries",
-      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 17 },
-      "fieldConfig": { "defaults": { "unit": "percent", "min": 0, "max": 100, "custom": { "drawStyle": "line", "fillOpacity": 10, "lineWidth": 2 } } },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 17
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "min": 0,
+          "max": 100,
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "lineWidth": 2
+          }
+        }
+      },
       "targets": [
         {
           "expr": "(1 - kiwivm_swap_available_bytes{hostname=~\"$hostname\"} / kiwivm_swap_total_bytes{hostname=~\"$hostname\"}) * 100",
@@ -233,9 +466,26 @@
     {
       "title": "系统负载",
       "type": "timeseries",
-      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 25 },
-      "fieldConfig": { "defaults": { "unit": "short", "custom": { "drawStyle": "line", "fillOpacity": 0, "lineWidth": 1 } } },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 25
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "lineWidth": 1
+          }
+        }
+      },
       "targets": [
         {
           "expr": "kiwivm_load1{hostname=~\"$hostname\"}",
@@ -257,9 +507,28 @@
     {
       "title": "磁盘使用率",
       "type": "timeseries",
-      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 25 },
-      "fieldConfig": { "defaults": { "unit": "percent", "min": 0, "max": 100, "custom": { "drawStyle": "line", "fillOpacity": 10, "lineWidth": 2 } } },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 25
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "min": 0,
+          "max": 100,
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "lineWidth": 2
+          }
+        }
+      },
       "targets": [
         {
           "expr": "kiwivm_disk_used_bytes{hostname=~\"$hostname\"} / kiwivm_disk_quota_bytes{hostname=~\"$hostname\"} * 100",
@@ -269,11 +538,79 @@
       ]
     },
     {
-      "title": "本月已用流量",
+      "title": "每日流量消耗",
       "type": "timeseries",
-      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 33 },
-      "fieldConfig": { "defaults": { "unit": "bytes", "custom": { "drawStyle": "line", "fillOpacity": 10, "lineWidth": 2 } } },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 41
+      },
+      "interval": "1d",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bytes",
+          "custom": {
+            "drawStyle": "bars",
+            "fillOpacity": 60,
+            "lineWidth": 1
+          }
+        }
+      },
+      "targets": [
+        {
+          "expr": "increase(bandwagon_data_counter{hostname=~\"$hostname\"}[24h])",
+          "legendFormat": "{{hostname}}",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "title": "月度流量",
+      "type": "stat",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 33
+      },
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "vertical"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bytes"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "C"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "d"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              }
+            ]
+          }
+        ]
+      },
       "targets": [
         {
           "expr": "bandwagon_data_counter{hostname=~\"$hostname\"}",
@@ -281,74 +618,73 @@
           "refId": "A"
         },
         {
-          "expr": "bandwagon_plan_monthly_data{hostname=~\"$hostname\"}",
-          "legendFormat": "{{hostname}} 月配额",
-          "refId": "B"
-        }
-      ]
-    },
-    {
-      "title": "月度流量",
-      "type": "stat",
-      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 33 },
-      "fieldConfig": {
-        "defaults": { "unit": "percentunit", "decimals": 1, "min": 0, "max": 1, "color": { "mode": "thresholds" }, "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "orange", "value": 0.7 }, { "color": "red", "value": 0.9 } ] } },
-        "overrides": [
-          {
-            "matcher": { "id": "byFrameRefID", "options": "B" },
-            "properties": [
-              { "id": "unit", "value": "dateTimeAsIso" },
-              { "id": "min" },
-              { "id": "max" },
-              { "id": "color", "value": { "mode": "fixed", "fixedColor": "text" } }
-            ]
-          },
-          {
-            "matcher": { "id": "byFrameRefID", "options": "C" },
-            "properties": [
-              { "id": "unit", "value": "d" },
-              { "id": "decimals", "value": 1 },
-              { "id": "min" },
-              { "id": "max" },
-              { "id": "color", "value": { "mode": "fixed", "fixedColor": "text" } }
-            ]
-          }
-        ]
-      },
-      "targets": [
-        {
-          "expr": "bandwagon_data_counter{hostname=~\"$hostname\"} / bandwagon_plan_monthly_data{hostname=~\"$hostname\"}",
-          "legendFormat": "{{hostname}} 使用占比",
-          "refId": "A"
-        },
-        {
-          "expr": "bandwagon_data_next_reset{hostname=~\"$hostname\"} * 1000",
-          "legendFormat": "{{hostname}} 重置时间",
+          "expr": "bandwagon_plan_monthly_data{hostname=~\"$hostname\"} - bandwagon_data_counter{hostname=~\"$hostname\"}",
+          "legendFormat": "{{hostname}} 剩余",
           "refId": "B"
         },
         {
           "expr": "(bandwagon_data_next_reset{hostname=~\"$hostname\"} - time()) / 86400",
-          "legendFormat": "{{hostname}} 剩余天数",
+          "legendFormat": "{{hostname}} 距重置",
           "refId": "C"
         }
       ]
     },
     {
-      "title": "流量使用进度 vs 时间进度",
-      "type": "timeseries",
-      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 41 },
-      "fieldConfig": { "defaults": { "unit": "percentunit", "min": 0, "max": 1, "custom": { "drawStyle": "line", "fillOpacity": 10, "lineWidth": 2 } } },
+      "title": "流量进度(用量 vs 时间)",
+      "type": "bargauge",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 33
+      },
+      "options": {
+        "orientation": "horizontal",
+        "displayMode": "gradient",
+        "showUnfilled": true,
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "min": 0,
+          "max": 1,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 0.7
+              },
+              {
+                "color": "red",
+                "value": 0.9
+              }
+            ]
+          }
+        }
+      },
       "targets": [
         {
           "expr": "bandwagon_data_counter{hostname=~\"$hostname\"} / bandwagon_plan_monthly_data{hostname=~\"$hostname\"}",
-          "legendFormat": "{{hostname}} 用量进度",
+          "legendFormat": "{{hostname}} 用量",
           "refId": "A"
         },
         {
           "expr": "1 - (bandwagon_data_next_reset{hostname=~\"$hostname\"} - time()) / 2592000",
-          "legendFormat": "{{hostname}} 时间进度",
+          "legendFormat": "{{hostname}} 时间",
           "refId": "B"
         }
       ]
@@ -356,9 +692,26 @@
     {
       "title": "网络带宽",
       "type": "timeseries",
-      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 41 },
-      "fieldConfig": { "defaults": { "unit": "Bps", "custom": { "drawStyle": "line", "fillOpacity": 10, "lineWidth": 2 } } },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 41
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "Bps",
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "lineWidth": 2
+          }
+        }
+      },
       "targets": [
         {
           "expr": "kiwivm_network_in_bytes{hostname=~\"$hostname\"} / 300",
@@ -375,9 +728,26 @@
     {
       "title": "磁盘 IO",
       "type": "timeseries",
-      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 49 },
-      "fieldConfig": { "defaults": { "unit": "Bps", "custom": { "drawStyle": "line", "fillOpacity": 10, "lineWidth": 2 } } },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 49
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "Bps",
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "lineWidth": 2
+          }
+        }
+      },
       "targets": [
         {
           "expr": "kiwivm_disk_read_bytes{hostname=~\"$hostname\"} / 300",
@@ -394,13 +764,43 @@
     {
       "title": "运行状态时间线",
       "type": "state-timeline",
-      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 49 },
-      "options": { "mergeValues": true, "showValue": "never", "alignValue": "left", "rowHeight": 0.9 },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 49
+      },
+      "options": {
+        "mergeValues": true,
+        "showValue": "never",
+        "alignValue": "left",
+        "rowHeight": 0.9
+      },
       "fieldConfig": {
         "defaults": {
-          "custom": { "lineWidth": 0, "fillOpacity": 70 },
-          "mappings": [{ "type": "value", "options": { "1": { "text": "运行中", "color": "green" }, "0": { "text": "已停止", "color": "red" } } }]
+          "custom": {
+            "lineWidth": 0,
+            "fillOpacity": 70
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "1": {
+                  "text": "运行中",
+                  "color": "green"
+                },
+                "0": {
+                  "text": "已停止",
+                  "color": "red"
+                }
+              }
+            }
+          ]
         }
       },
       "targets": [
@@ -414,13 +814,43 @@
     {
       "title": "节流事件时间线",
       "type": "state-timeline",
-      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "gridPos": { "h": 6, "w": 12, "x": 0, "y": 57 },
-      "options": { "mergeValues": true, "showValue": "never", "alignValue": "left", "rowHeight": 0.9 },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 12,
+        "x": 0,
+        "y": 57
+      },
+      "options": {
+        "mergeValues": true,
+        "showValue": "never",
+        "alignValue": "left",
+        "rowHeight": 0.9
+      },
       "fieldConfig": {
         "defaults": {
-          "custom": { "lineWidth": 0, "fillOpacity": 70 },
-          "mappings": [{ "type": "value", "options": { "1": { "text": "限速中", "color": "orange" }, "0": { "text": "正常", "color": "green" } } }]
+          "custom": {
+            "lineWidth": 0,
+            "fillOpacity": 70
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "1": {
+                  "text": "限速中",
+                  "color": "orange"
+                },
+                "0": {
+                  "text": "正常",
+                  "color": "green"
+                }
+              }
+            }
+          ]
         }
       },
       "targets": [
@@ -439,13 +869,37 @@
     {
       "title": "API 限流剩余积分",
       "type": "timeseries",
-      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "gridPos": { "h": 6, "w": 12, "x": 12, "y": 57 },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 12,
+        "x": 12,
+        "y": 57
+      },
       "fieldConfig": {
         "defaults": {
           "unit": "short",
-          "custom": { "drawStyle": "line", "fillOpacity": 0, "lineWidth": 1 },
-          "thresholds": { "mode": "absolute", "steps": [ { "color": "red", "value": null }, { "color": "green", "value": 100 } ] }
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "lineWidth": 1
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 100
+              }
+            ]
+          }
         }
       },
       "targets": [
