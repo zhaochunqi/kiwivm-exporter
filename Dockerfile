@@ -1,4 +1,4 @@
-FROM golang:1.27-alpine AS builder
+FROM --platform=$BUILDPLATFORM golang:1.27-alpine AS builder
 
 WORKDIR /app
 
@@ -6,7 +6,8 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 COPY . .
-RUN CGO_ENABLED=0 go build -ldflags="-s -w" -o kiwivm-exporter .
+ARG TARGETOS TARGETARCH
+RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build -ldflags="-s -w" -o kiwivm-exporter .
 
 FROM gcr.io/distroless/static-debian12:nonroot
 
