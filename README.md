@@ -83,6 +83,12 @@ docker run -d --name kiwivm-exporter \
 
 镜像基于 `gcr.io/distroless/static-debian12:nonroot`,非 root 运行,仅支持 linux/amd64(见 `.github/workflows/docker.yml`)。
 
+## Grafana Dashboard
+
+[`grafana/kiwivm-overview.json`](./grafana/kiwivm-overview.json) 提供一份可导入的总览面板:运行状态、CPU、内存、SWAP、负载、磁盘、流量配额与 API 健康一页看全,支持按 `hostname` 筛选多节点。
+
+导入方式:Grafana → Dashboards → New → Import → 粘贴 JSON,选择你的 Prometheus 数据源。
+
 ## License
 
 MIT
