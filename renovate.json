@@ -1,4 +1,14 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["github>zhaochunqi/renovate-config"]
+  "extends": ["github>zhaochunqi/renovate-config"],
+  // action 只用在 docker.yml,CI 会真跑一遍构建,major 升级(这几个都是
+  // 切 Node 24 运行时)能被 checks 直接验证,所以放开自动合并;
+  // 冷静期仍由上层 minimumReleaseAge 3 天兜着。
+  "packageRules": [
+    {
+      "matchManagers": ["github-actions"],
+      "matchUpdateTypes": ["major"],
+      "automerge": true
+    }
+  ]
 }
